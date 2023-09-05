@@ -1,0 +1,4 @@
+region="ap-northeast-1"
+key="hogehgoe.tfstate"
+bucket="terraform-bucket"
+role_arn="arn:aws:iam::123456789:role/terraform"
