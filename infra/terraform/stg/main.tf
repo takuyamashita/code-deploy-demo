@@ -9,21 +9,22 @@ terraform {
 }
 
 variable "assume_role_arn" {
-    type = string
+  type = string
 }
 
 provider "aws" {
-    assume_role {
-        role_arn = "${var.assume_role_arn}"
+  assume_role {
+    role_arn = var.assume_role_arn
+  }
+  default_tags {
+    tags = {
+      "Terraform"   = "true"
+      "Environment" = "staging"
     }
-}
-
-/*
-resource "aws_vpc" "example" {
-  cidr_block = "10.0.0.0/16"
-
-  tags = {
-    Name = "example-vpc"
   }
 }
-*/
+
+module "network" {
+  source         = "../modules/network"
+  vpc_cidr_block = "10.0.0.0/16"
+}
