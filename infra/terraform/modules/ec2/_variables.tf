@@ -1,3 +1,44 @@
+variable "availability_zones" {
+  type = list(string)
+}
+
+variable "server_spec" {
+
+  type = object({
+    next_server = object({
+      desired_capacity = number
+      max_size         = number
+      min_size         = number
+    }),
+    echo_server = object({
+      desired_capacity = number
+      max_size         = number
+      min_size         = number
+    })
+  })
+
+  default = {
+    next_server = {
+      desired_capacity = 1
+      max_size         = 1
+      min_size         = 1
+    },
+    echo_server = {
+      desired_capacity = 1
+      max_size         = 1
+      min_size         = 1
+    }
+  }
+}
+
+variable "next_server_subnet_ids" {
+  type = list(string)
+}
+
+variable "echo_server_subnet_ids" {
+  type = list(string)
+}
+
 variable "next_server_sg_id" {
   type = string
 }
@@ -13,4 +54,3 @@ variable "next_server_instance_profile_arn" {
 variable "echo_server_instance_profile_arn" {
   type = string
 }
-  

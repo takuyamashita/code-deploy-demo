@@ -30,14 +30,19 @@ module "network" {
 }
 
 module "iam" {
-  source = "../modules/iam" 
+  source = "../modules/iam"
 }
 
 module "ec2" {
   source = "../modules/ec2"
 
+  availability_zones = module.network.availability_zones
+
   echo_server_instance_profile_arn = module.iam.echo_server_instance_profile_arn
   next_server_instance_profile_arn = module.iam.next_server_instance_profile_arn
+
+  echo_server_subnet_ids = [module.network.subnet_ids["private_subnet_1a"]]
+  next_server_subnet_ids = [module.network.subnet_ids["private_subnet_1a"]]
 
   echo_server_sg_id = module.network.security_group_ids["echo_server_sg"]
   next_server_sg_id = module.network.security_group_ids["next_server_sg"]

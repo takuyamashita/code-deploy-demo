@@ -7,10 +7,10 @@ variable "availability_zone" {
 }
 
 variable "subnet_tag_key" {
-  type    = string
+  type = string
 }
 
 variable "subnet_tag_value" {
-  type    = string
+  type = string
 }
   

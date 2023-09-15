@@ -1,13 +1,13 @@
 locals {
   templates = {
     next_server = {
-      image_id = data.aws_ami.next-server.id
-      security_group_ids = [var.next_server_sg_id]
+      image_id             = data.aws_ami.next-server.id
+      security_group_ids   = [var.next_server_sg_id]
       instance_profile_arn = var.next_server_instance_profile_arn
     },
     echo_server = {
-      image_id = data.aws_ami.echo-server.id
-      security_group_ids = [var.echo_server_sg_id]
+      image_id             = data.aws_ami.echo-server.id
+      security_group_ids   = [var.echo_server_sg_id]
       instance_profile_arn = var.echo_server_instance_profile_arn
     },
   }
@@ -20,8 +20,6 @@ resource "aws_launch_template" "launch_template" {
   name = each.key
 
   image_id = each.value.image_id
-
-  vpc_security_group_ids = each.value.security_group_ids
 
   iam_instance_profile {
     arn = each.value.instance_profile_arn
@@ -36,10 +34,12 @@ resource "aws_launch_template" "launch_template" {
     }
   }
 
+  /*
   cpu_options {
     core_count       = 1
     threads_per_core = 2
   }
+  */
 
   credit_specification {
     cpu_credits = "standard"
@@ -51,8 +51,6 @@ resource "aws_launch_template" "launch_template" {
   disable_api_termination = false
 
   ebs_optimized = false
-
-
 
   instance_initiated_shutdown_behavior = "terminate"
 
@@ -75,5 +73,7 @@ resource "aws_launch_template" "launch_template" {
 
   network_interfaces {
     associate_public_ip_address = false
+    delete_on_termination       = true
+    security_groups             = each.value.security_group_ids
   }
 }

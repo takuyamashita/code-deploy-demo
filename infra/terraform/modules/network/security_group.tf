@@ -4,6 +4,7 @@ locals {
   internal_alb_sg = "internal_alb_sg"
   echo_server_sg  = "echo_server_sg"
   next_server_sg  = "next_server_sg"
+  ssm_sg          = "ssm_sg"
 
   security_groups = {
     "${local.front_alb_sg}" = {
@@ -85,6 +86,13 @@ locals {
           cidr_ipv4                      = ""
           referenced_security_group_name = local.internal_alb_sg
         },
+        {
+          ip_protocol                    = "tcp"
+          from_port                      = 443
+          to_port                        = 443
+          cidr_ipv4                      = var.any_ipv4
+          referenced_security_group_name = ""
+        },
       ],
     },
     "${local.next_server_sg}" = {
@@ -105,8 +113,27 @@ locals {
           cidr_ipv4                      = ""
           referenced_security_group_name = local.echo_server_sg
         },
+        {
+          ip_protocol                    = "tcp"
+          from_port                      = 443
+          to_port                        = 443
+          cidr_ipv4                      = var.any_ipv4
+          referenced_security_group_name = ""
+        },
       ],
     },
+    "${local.ssm_sg}" = {
+      ingress = [
+        {
+          ip_protocol                    = "tcp"
+          from_port                      = 443
+          to_port                        = 443
+          cidr_ipv4                      = var.vpc_cidr_block
+          referenced_security_group_name = ""
+        },
+      ],
+      egress = [],
+    }
   }
 }
 
