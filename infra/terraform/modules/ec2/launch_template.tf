@@ -76,4 +76,21 @@ resource "aws_launch_template" "launch_template" {
     delete_on_termination       = true
     security_groups             = each.value.security_group_ids
   }
+
+  user_data = base64encode(local.userdata)
+}
+locals {
+  userdata = <<USERDATA
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+
+--==MYBOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
+
+#!/bin/bash
+echo "" | sudo tee -a /etc/codedeploy-agent/conf/codedeployagent.yml
+echo ":enable_auth_policy: true" | sudo tee -a /etc/codedeploy-agent/conf/codedeployagent.yml
+sudo systemctl restart codedeploy-agent
+--==MYBOUNDARY==--\
+USERDATA
 }

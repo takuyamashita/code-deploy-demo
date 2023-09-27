@@ -38,6 +38,19 @@ module "ec2" {
 
   availability_zones = module.network.availability_zones
 
+  server_spec = {
+    echo_server = {
+      desired_capacity = 2
+      max_size         = 3
+      min_size         = 1
+    },
+    next_server = {
+      desired_capacity = 2
+      max_size         = 3
+      min_size         = 1
+    },
+  }
+
   echo_server_instance_profile_arn = module.iam.echo_server_instance_profile_arn
   next_server_instance_profile_arn = module.iam.next_server_instance_profile_arn
 
@@ -46,4 +59,14 @@ module "ec2" {
 
   echo_server_sg_id = module.network.security_group_ids["echo_server_sg"]
   next_server_sg_id = module.network.security_group_ids["next_server_sg"]
+
+  code_deploy_service_role_arn = module.iam.code_deploy_role_arn
+
+  alb_next_target_group_arn = module.network.alb_next_target_group_arn
+  nlb_echo_target_group_arn = module.network.nlb_echo_target_group_arn
 }
+
+module "s3" {
+  source = "../modules/s3"
+}
+

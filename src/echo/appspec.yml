@@ -1,0 +1,13 @@
+version: 0.0
+os: linux
+files:
+  - source: echo
+    destination: /app
+  - source: app.service
+    destination: /etc/systemd/system/
+file_exist_behavior: OVERWRITE
+hooks:
+  ApplicationStart:
+    - location: start.sh
+      timeout: 180
+      runas: root

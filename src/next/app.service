@@ -1,0 +1,10 @@
+[Unit]
+After=syslog.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/app
+ExecStart=/app/start_service.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -54,3 +54,15 @@ variable "next_server_instance_profile_arn" {
 variable "echo_server_instance_profile_arn" {
   type = string
 }
+
+variable "code_deploy_service_role_arn" {
+  type = string
+}
+
+variable "alb_next_target_group_arn" {
+  type = string
+}
+
+variable "nlb_echo_target_group_arn" {
+  type = string
+}
