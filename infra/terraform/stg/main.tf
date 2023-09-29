@@ -40,12 +40,12 @@ module "ec2" {
 
   server_spec = {
     echo_server = {
-      desired_capacity = 2
+      desired_capacity = 1
       max_size         = 3
       min_size         = 1
     },
     next_server = {
-      desired_capacity = 2
+      desired_capacity = 1
       max_size         = 3
       min_size         = 1
     },
@@ -64,6 +64,11 @@ module "ec2" {
 
   alb_next_target_group_arn = module.network.alb_next_target_group_arn
   nlb_echo_target_group_arn = module.network.nlb_echo_target_group_arn
+
+  target_group_names = {
+    echo_server = module.network.echo_server_target_group_name
+    next_server = module.network.next_server_target_group_name
+  }
 }
 
 module "s3" {

@@ -66,3 +66,10 @@ variable "alb_next_target_group_arn" {
 variable "nlb_echo_target_group_arn" {
   type = string
 }
+
+variable "target_group_names" {
+  type = object({
+    next_server = string
+    echo_server = string
+  })
+}

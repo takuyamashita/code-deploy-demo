@@ -1,10 +1,10 @@
 locals {
 
-  front_alb_sg    = "front_alb_sg"
-  echo_nlb_sg = "echo_nlb_sg"
-  echo_server_sg  = "echo_server_sg"
-  next_server_sg  = "next_server_sg"
-  ssm_sg          = "ssm_sg"
+  front_alb_sg   = "front_alb_sg"
+  echo_nlb_sg    = "echo_nlb_sg"
+  echo_server_sg = "echo_server_sg"
+  next_server_sg = "next_server_sg"
+  ssm_sg         = "ssm_sg"
 
   security_groups = {
     "${local.front_alb_sg}" = {

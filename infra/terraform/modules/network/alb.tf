@@ -39,10 +39,10 @@ resource "aws_lb_listener_rule" "echo_nlb" {
 }
 
 resource "aws_lb_target_group" "echo_nlb" {
-  name     = "echo-server"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.vpc.id
+  name        = "echo-server-${substr(uuid(), 0, 8)}"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.vpc.id
   target_type = "ip"
 
   health_check {
@@ -54,13 +54,18 @@ resource "aws_lb_target_group" "echo_nlb" {
     timeout             = 5
     interval            = 10
   }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [name]
+  }
 }
 
 resource "aws_lb_target_group" "next_server" {
-  name     = "next-server"
-  port     = 3000
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.vpc.id
+  name        = "next-server-${substr(uuid(), 0, 8)}"
+  port        = 3000
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.vpc.id
   target_type = "instance"
 
   health_check {
@@ -72,6 +77,11 @@ resource "aws_lb_target_group" "next_server" {
     timeout             = 5
     interval            = 10
   }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [name]
+  }
 }
 
 ///////////////////////////////////////////////////
@@ -82,8 +92,8 @@ resource "aws_lb" "echo_nlb" {
   name               = "echo-nlb"
   internal           = true
   load_balancer_type = "network"
-  
-  security_groups    = [aws_security_group.sg[local.echo_nlb_sg].id]
+
+  security_groups = [aws_security_group.sg[local.echo_nlb_sg].id]
 
   dynamic "subnet_mapping" {
     for_each = compact([
@@ -91,10 +101,10 @@ resource "aws_lb" "echo_nlb" {
     ])
 
     content {
-      subnet_id = aws_subnet.subnet[subnet_mapping.value].id
+      subnet_id            = aws_subnet.subnet[subnet_mapping.value].id
       private_ipv4_address = replace(cidrsubnet(aws_subnet.subnet[subnet_mapping.value].cidr_block, 4, 1), "/.{3}$/", "")
     }
-    
+
   }
 
   enable_deletion_protection = false
@@ -112,7 +122,7 @@ resource "aws_lb_listener" "echo_nlb" {
 }
 
 resource "aws_lb_target_group" "echo_server" {
-  name     = "internal-echo-server"
+  name     = "internal-echo-server-${substr(uuid(), 0, 8)}"
   port     = 80
   protocol = "TCP"
   vpc_id   = aws_vpc.vpc.id
@@ -124,6 +134,11 @@ resource "aws_lb_target_group" "echo_server" {
     unhealthy_threshold = 3
     timeout             = 5
     interval            = 10
+  }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [name]
   }
 }
 
