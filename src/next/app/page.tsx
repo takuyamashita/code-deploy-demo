@@ -4,7 +4,7 @@ type Message = {
 
 async function getMessage() {
 
-  const res = await fetch(`${process.env.API_URL}/api/message`);
+  const res = await fetch(`${process.env.API_URL}/api/message`, {cache: "no-store"});
   const data:Message = await res.json();
 
   return data.message;
