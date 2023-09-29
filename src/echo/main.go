@@ -1,23 +1,53 @@
 package main
 
 import (
+	"app/middleware"
+	"fmt"
+	"log"
 	"net/http"
+	"os"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
+var logger *zap.Logger
+
 func main() {
-	e := echo.New()
 
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	currentDir, _ := os.Getwd()
+	_, err := os.OpenFile(fmt.Sprintf("%s/%s", currentDir, "gin.log"), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	e.GET("/api/message", hello)
+	encoderConfig := zap.NewProductionEncoderConfig()
+	encoderConfig.TimeKey = "timestamp"
+	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 
-	e.Logger.Fatal(e.Start(":80"))
+	config := zap.NewProductionConfig()
+	config.EncoderConfig = encoderConfig
+	config.OutputPaths = []string{"gin.log"}
+	config.DisableStacktrace = false
+
+	logger, err = config.Build()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer logger.Sync()
+
+	r := gin.New()
+	r.Use(middleware.Logger(logger))
+	r.GET("/api/message", hello)
+	r.Run("[::]:80")
 }
 
-func hello(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{"message": "Hello, World!"})
+func hello(c *gin.Context) {
+
+	logger.Info("hello world")
+	logger.Error("error")
+
+	c.JSON(http.StatusOK, map[string]string{"message": "Hello, World!"})
 }

@@ -3,4 +3,8 @@ After=syslog.target
 
 [Service]
 User=ec2-user
-ExecStart=/usr/bin/sudo /app/echo
+WorkingDirectory=/app
+ExecStart=/usr/bin/sudo /app/app
+
+[Install]
+WantedBy=multi-user.target

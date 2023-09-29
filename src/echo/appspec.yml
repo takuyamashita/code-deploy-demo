@@ -1,11 +1,14 @@
 version: 0.0
+
 os: linux
+
 files:
-  - source: echo
+  - source: app
     destination: /app
   - source: app.service
     destination: /etc/systemd/system/
-file_exist_behavior: OVERWRITE
+file_exists_behavior: OVERWRITE
+
 hooks:
   ApplicationStart:
     - location: start.sh
