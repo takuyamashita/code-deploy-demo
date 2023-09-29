@@ -17,8 +17,14 @@ resource "aws_launch_template" "launch_template" {
 
   for_each = local.templates
 
-  name        = each.key
-  name_prefix = each.key
+  name = each.key
+
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name = each.key
+    }
+  }
 
   image_id = each.value.image_id
 
