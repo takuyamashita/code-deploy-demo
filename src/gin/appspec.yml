@@ -5,7 +5,7 @@ os: linux
 files:
   - source: app
     destination: /app
-  - source: /codedeply/app.service
+  - source: codedeply/app.service
     destination: /etc/systemd/system/
 file_exists_behavior: OVERWRITE
 

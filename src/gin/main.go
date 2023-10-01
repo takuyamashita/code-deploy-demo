@@ -17,7 +17,6 @@ var logger *zap.Logger
 func main() {
 
 	currentDir, _ := os.Getwd()
-
 	_, err := os.OpenFile(fmt.Sprintf("%s/%s", currentDir, "gin.log"), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatal(err)
