@@ -22,7 +22,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: src/gin
+        working-directory: src/next
 
     steps:
       - uses: actions/checkout@v4

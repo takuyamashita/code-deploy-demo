@@ -5,7 +5,7 @@ os: linux
 files:
   - source: /
     destination: /app
-  - source: app.service
+  - source: codedeploy/app.service
     destination: /etc/systemd/system/
 
 file_exists_behavior: OVERWRITE
@@ -22,6 +22,6 @@ permissions:
 
 hooks:
   ApplicationStart:
-    - location: start.sh
+    - location: codedeploy/start.sh
       timeout: 180
       runas: ec2-user
