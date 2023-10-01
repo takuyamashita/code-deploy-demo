@@ -41,7 +41,7 @@ jobs:
       - name: zip artifact
         run: >
           zip -r
-          artifact.zip
+          ${{ env.ARTIFACT_NAME }}
           .
           -x node_modules/\* .next\*
 
