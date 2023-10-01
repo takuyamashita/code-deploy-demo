@@ -34,7 +34,9 @@ jobs:
           echo "ARTIFACT_NAME=artifact-$(date +'%Y-%m-%d_%H-%M-%S')-${{ github.sha }}.zip" >> $GITHUB_ENV
       
       - name: Make env
-        run: echo "${{ secrets.NEXT_ENV }} > .env.production"
+        run: |
+          touch .env.production
+          echo "${{ secrets.NEXT_ENV }} > .env.production"
       
       # build next standalone mode
       
