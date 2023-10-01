@@ -5,12 +5,12 @@ os: linux
 files:
   - source: app
     destination: /app
-  - source: codedeply/app.service
+  - source: codedeploy/app.service
     destination: /etc/systemd/system/
 file_exists_behavior: OVERWRITE
 
 hooks:
   ApplicationStart:
-    - location: codedeply/start.sh
+    - location: codedeploy/start.sh
       timeout: 180
       runas: root
