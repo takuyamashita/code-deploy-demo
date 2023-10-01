@@ -13,6 +13,9 @@ on:
 
 jobs:
   deploy:
+    concurrency:
+      group: ${{ github.workflow }}
+
     runs-on: ubuntu-latest
 
     environment: ${{ github.ref == 'main' && 'stg' || 'stg' }}
