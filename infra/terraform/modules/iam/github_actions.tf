@@ -27,12 +27,6 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
       variable = "token.actions.githubusercontent.com:sub"
       values   = ["repo:takuyamashita/code-deploy-demo:environment:stg"]
     }
-
-    condition {
-      test     = "StringEquals"
-      variable = "token.actions.githubusercontent.com:ref"
-      values   = ["refs/heads/main"]
-    }
   }
 }
 
