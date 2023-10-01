@@ -4,6 +4,7 @@ After=syslog.target
 [Service]
 User=ec2-user
 WorkingDirectory=/app
+Environment=GIN_MODE=release
 ExecStart=/usr/bin/sudo /app/app
 
 [Install]

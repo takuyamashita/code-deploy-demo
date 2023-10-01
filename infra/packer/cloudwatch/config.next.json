@@ -1,0 +1,66 @@
+{
+  "metrics": {
+    "metrics_collected": {
+      "cpu": {
+        "resources": [
+          "*"
+        ],
+        "measurement": [
+          "usage_active"
+        ],
+        "totalcpu": true
+      },
+      "mem": {
+         "measurement": [
+           "used_percent"
+        ]
+      },
+      "disk": {
+        "resources": [
+          "*"
+        ],
+        "measurement": [
+          "used_percent"
+        ],
+        "ignore_file_system_types": [
+          "sysfs",
+          "devtmpfs",
+          "tmpfs",
+          "overlay",
+          "shm",
+          "devpts",
+          "proc",
+          "cgroup",
+          "cgroup2",
+          "pstore",
+          "mqueue",
+          "configfs",
+          "hugetlbfs",
+          "fusectl",
+          "securityfs",
+          "rpc_pipefs",
+          "fuse.gvfsd-fuse",
+          "fuse.gvfs-fuse-daemon",
+          "fuse.gvfsd-metadata",
+          "squashfs",
+          "fuse",
+          "fusectl",
+          "fuse.gvfsd-fuse",
+          "fuse.gvfs-fuse-daemon",
+          "fuse.gvfsd-metadata",
+          "squashfs",
+          "fuse"
+        ]
+      }
+    },
+    "append_dimensions": {
+      "AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+      "InstanceId": "${aws:InstanceId}"
+    },
+    "aggregation_dimensions": [
+      [
+        "AutoScalingGroupName", "path"
+      ]
+    ]
+  }
+}

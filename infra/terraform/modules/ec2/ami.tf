@@ -7,11 +7,11 @@ data "aws_ami" "next-server" {
   }
 }
 
-data "aws_ami" "echo-server" {
+data "aws_ami" "gin-server" {
   most_recent = true
 
   filter {
     name   = "tag:Role"
-    values = ["echo-server"]
+    values = ["gin-server"]
   }
 }

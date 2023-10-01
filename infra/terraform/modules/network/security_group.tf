@@ -1,8 +1,8 @@
 locals {
 
   front_alb_sg   = "front_alb_sg"
-  echo_nlb_sg    = "echo_nlb_sg"
-  echo_server_sg = "echo_server_sg"
+  gin_nlb_sg    = "gin_nlb_sg"
+  gin_server_sg = "gin_server_sg"
   next_server_sg = "next_server_sg"
   ssm_sg         = "ssm_sg"
 
@@ -37,11 +37,11 @@ locals {
           from_port                      = 80
           to_port                        = 80
           cidr_ipv4                      = ""
-          referenced_security_group_name = local.echo_nlb_sg
+          referenced_security_group_name = local.gin_nlb_sg
         },
       ],
     },
-    "${local.echo_nlb_sg}" = {
+    "${local.gin_nlb_sg}" = {
       ingress = [
         {
           ip_protocol                    = "tcp"
@@ -64,11 +64,11 @@ locals {
           from_port                      = 80
           to_port                        = 80
           cidr_ipv4                      = ""
-          referenced_security_group_name = local.echo_server_sg
+          referenced_security_group_name = local.gin_server_sg
         },
       ],
     },
-    "${local.echo_server_sg}" = {
+    "${local.gin_server_sg}" = {
       ingress = [
         {
           ip_protocol                    = "tcp"
@@ -82,7 +82,7 @@ locals {
           from_port                      = 80
           to_port                        = 80
           cidr_ipv4                      = ""
-          referenced_security_group_name = local.echo_nlb_sg
+          referenced_security_group_name = local.gin_nlb_sg
         },
       ],
       egress = [
@@ -91,7 +91,7 @@ locals {
           from_port                      = 80
           to_port                        = 80
           cidr_ipv4                      = ""
-          referenced_security_group_name = local.echo_nlb_sg
+          referenced_security_group_name = local.gin_nlb_sg
         },
         {
           ip_protocol                    = "tcp"
@@ -118,7 +118,7 @@ locals {
           from_port                      = 80
           to_port                        = 80
           cidr_ipv4                      = ""
-          referenced_security_group_name = local.echo_nlb_sg
+          referenced_security_group_name = local.gin_nlb_sg
         },
         {
           ip_protocol                    = "tcp"

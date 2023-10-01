@@ -21,13 +21,13 @@ resource "aws_lb_listener" "front_alb" {
   }
 }
 
-resource "aws_lb_listener_rule" "echo_nlb" {
+resource "aws_lb_listener_rule" "gin_nlb" {
   listener_arn = aws_lb_listener.front_alb.arn
   priority     = 100
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.echo_nlb.arn
+    target_group_arn = aws_lb_target_group.gin_nlb.arn
   }
 
   condition {
@@ -38,8 +38,8 @@ resource "aws_lb_listener_rule" "echo_nlb" {
   }
 }
 
-resource "aws_lb_target_group" "echo_nlb" {
-  name        = "echo-server-${substr(uuid(), 0, 8)}"
+resource "aws_lb_target_group" "gin_nlb" {
+  name        = "gin-server-${substr(uuid(), 0, 8)}"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.vpc.id
@@ -88,12 +88,12 @@ resource "aws_lb_target_group" "next_server" {
 // Internal NLB
 ///////////////////////////////////////////////////
 
-resource "aws_lb" "echo_nlb" {
-  name               = "echo-nlb"
+resource "aws_lb" "gin_nlb" {
+  name               = "gin-nlb"
   internal           = true
   load_balancer_type = "network"
 
-  security_groups = [aws_security_group.sg[local.echo_nlb_sg].id]
+  security_groups = [aws_security_group.sg[local.gin_nlb_sg].id]
 
   dynamic "subnet_mapping" {
     for_each = compact([
@@ -110,19 +110,19 @@ resource "aws_lb" "echo_nlb" {
   enable_deletion_protection = false
 }
 
-resource "aws_lb_listener" "echo_nlb" {
-  load_balancer_arn = aws_lb.echo_nlb.arn
+resource "aws_lb_listener" "gin_nlb" {
+  load_balancer_arn = aws_lb.gin_nlb.arn
   port              = 80
   protocol          = "TCP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.echo_server.arn
+    target_group_arn = aws_lb_target_group.gin_server.arn
   }
 }
 
-resource "aws_lb_target_group" "echo_server" {
-  name     = "internal-echo-server-${substr(uuid(), 0, 8)}"
+resource "aws_lb_target_group" "gin_server" {
+  name     = "internal-gin-server-${substr(uuid(), 0, 8)}"
   port     = 80
   protocol = "TCP"
   vpc_id   = aws_vpc.vpc.id
@@ -144,9 +144,9 @@ resource "aws_lb_target_group" "echo_server" {
 
 resource "aws_lb_target_group_attachment" "front_alb" {
 
-  for_each = toset([for v in aws_lb.echo_nlb.subnet_mapping : v.private_ipv4_address])
+  for_each = toset([for v in aws_lb.gin_nlb.subnet_mapping : v.private_ipv4_address])
 
-  target_group_arn = aws_lb_target_group.echo_nlb.arn
+  target_group_arn = aws_lb_target_group.gin_nlb.arn
   target_id        = each.value
   port             = 80
 }

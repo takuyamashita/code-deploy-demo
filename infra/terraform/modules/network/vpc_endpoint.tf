@@ -30,6 +30,11 @@ locals {
       type         = "Gateway"
       policy       = data.aws_iam_policy_document.vpc_endpoint.json
     },
+    cloudwatch_logs = {
+      service_name = "com.amazonaws.ap-northeast-1.logs"
+      type         = "Interface"
+      policy       = data.aws_iam_policy_document.vpc_endpoint.json
+    },
   }
 }
 

@@ -52,15 +52,15 @@ resource "aws_iam_instance_profile" "next_server_profile" {
   role = aws_iam_role.next_server_role.name
 }
 
-resource "aws_iam_role" "echo_server_role" {
-  name               = "echo_server_role"
+resource "aws_iam_role" "gin_server_role" {
+  name               = "gin_server_role"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
-resource "aws_iam_instance_profile" "echo_server_profile" {
-  name = "echo_server_profile"
-  role = aws_iam_role.echo_server_role.name
+resource "aws_iam_instance_profile" "gin_server_profile" {
+  name = "gin_server_profile"
+  role = aws_iam_role.gin_server_role.name
 }
 
 resource "aws_iam_role_policy_attachment" "next_server_attachment" {
@@ -71,11 +71,11 @@ resource "aws_iam_role_policy_attachment" "next_server_attachment" {
   policy_arn = each.value
 }
 
-resource "aws_iam_role_policy_attachment" "echo_server_attachment" {
+resource "aws_iam_role_policy_attachment" "gin_server_attachment" {
 
   for_each = toset(local.ec2_base_policies)
 
-  role       = aws_iam_role.echo_server_role.name
+  role       = aws_iam_role.gin_server_role.name
   policy_arn = each.value
 }
 
@@ -84,8 +84,8 @@ resource "aws_iam_role_policy_attachment" "next_server_code_deploy_attachment" {
   policy_arn = aws_iam_policy.code_deploy_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "echo_server_code_deploy_attachment" {
-  role       = aws_iam_role.echo_server_role.name
+resource "aws_iam_role_policy_attachment" "gin_server_code_deploy_attachment" {
+  role       = aws_iam_role.gin_server_role.name
   policy_arn = aws_iam_policy.code_deploy_policy.arn
 }
 

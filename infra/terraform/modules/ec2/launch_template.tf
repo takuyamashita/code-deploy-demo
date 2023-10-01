@@ -5,10 +5,10 @@ locals {
       security_group_ids   = [var.next_server_sg_id]
       instance_profile_arn = var.next_server_instance_profile_arn
     },
-    echo_server = {
-      image_id             = data.aws_ami.echo-server.id
-      security_group_ids   = [var.echo_server_sg_id]
-      instance_profile_arn = var.echo_server_instance_profile_arn
+    gin_server = {
+      image_id             = data.aws_ami.gin-server.id
+      security_group_ids   = [var.gin_server_sg_id]
+      instance_profile_arn = var.gin_server_instance_profile_arn
     },
   }
 }
@@ -95,9 +95,9 @@ Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 Content-Type: text/x-shellscript; charset="us-ascii"
 
 #!/bin/bash
-echo "" | sudo tee -a /etc/codedeploy-agent/conf/codedeployagent.yml
-echo ":enable_auth_policy: true" | sudo tee -a /etc/codedeploy-agent/conf/codedeployagent.yml
-sudo systemctl restart codedeploy-agent
+#gin "" | sudo tee -a /etc/codedeploy-agent/conf/codedeployagent.yml
+#gin ":enable_auth_policy: true" | sudo tee -a /etc/codedeploy-agent/conf/codedeployagent.yml
+#sudo systemctl restart codedeploy-agent
 --==MYBOUNDARY==--\
 USERDATA
 }
