@@ -45,6 +45,10 @@ jobs:
 
       - name: build
         run: go build -o app
+        env:
+          CGO_ENABLED: 0
+          GOOS: linux
+          GOARCH: amd64
       
       - name: zip artifact
         run: >
