@@ -46,8 +46,8 @@ jobs:
       - name: zip artifact
         run: >
           zip -r
-            ${{ env.ARTIFACT_NAME }}
-            app appspec.yml codedeploy
+          ${{ env.ARTIFACT_NAME }}
+          app appspec.yml codedeploy
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
