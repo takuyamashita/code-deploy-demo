@@ -59,7 +59,7 @@ jobs:
         run: >
           aws s3 cp
           ${{ env.ARTIFACT_NAME }}
-          ${{ secrets.GIN_ARTIFACT_BUCKET }}
+          s3://${{ secrets.GIN_ARTIFACT_BUCKET }}
       
       - name: Deploy
         run: >
