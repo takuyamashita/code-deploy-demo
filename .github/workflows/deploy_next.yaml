@@ -35,8 +35,7 @@ jobs:
       
       - name: Make env
         run: |
-          touch .env.production
-          echo "${{ secrets.NEXT_ENV }} > .env.production"
+          echo "${{ secrets.NEXT_ENV }}" > .env.production
       
       # build next standalone mode
       
