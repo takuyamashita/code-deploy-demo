@@ -15,10 +15,23 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
       identifiers = [var.openid_connect_provider_github_actions_arn]
     }
 
+    // @see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#understanding-the-oidc-token
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:takuyamashta/code-deploy-demo:ref:refs/heads/main"]
+      values   = ["repo:takuyamashita/code-deploy-demo:environment:stg"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:ref"
+      values   = ["refs/heads/main"]
     }
   }
 }
